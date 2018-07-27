@@ -2,19 +2,25 @@ import React from 'react';
 import './Dashboard.css';
 
 import { connect } from 'react-redux';
-import { updateName } from '../../ducks/reducer';
+import { addList, deleteList } from '../../ducks/reducer';
 
 class Dashboard extends React.Component {
   constructor() {
     super();
     this.state = { input: '' };
+    this.sendListToRedux = this.sendListToRedux.bind(this);
+  }
+
+  sendListToRedux() {
+    this.props.ourAddList(this.state.input);
   }
 
   render() {
     return(
       <div className='Dashboard'>
         <input onChange={ e => this.setState({ input: e.target.value }) }/>
-        <button onClick={ () => this.props.ourUpdateName(this.state.input) }>Create List</button>
+        <button onClick={ () => this.props.ourAddList(this.state.input) }>Create List</button>
+        <button onClick={ () => this.props.ourDeleteList(this.state.input) }>Delete List</button>
         <p>{ this.props.myName }</p>
       </div>
     );
@@ -22,7 +28,7 @@ class Dashboard extends React.Component {
 }
 
 function mapStateToProps(state) {
-  return { myName: state.name };
+  return { myLists: state.lists };
 }
 
-export default connect(mapStateToProps, { ourUpdateName: updateName })(Dashboard);
+export default connect(mapStateToProps, { ourAddList: addList, ourDeleteList: deleteList })(Dashboard);
