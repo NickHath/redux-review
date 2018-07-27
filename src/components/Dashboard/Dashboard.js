@@ -1,6 +1,9 @@
 import React from 'react';
 import './Dashboard.css';
 
+import { connect } from 'react-redux';
+import { updateName } from '../../ducks/reducer';
+
 class Dashboard extends React.Component {
   constructor() {
     super();
@@ -11,11 +14,15 @@ class Dashboard extends React.Component {
     return(
       <div className='Dashboard'>
         <input onChange={ e => this.setState({ input: e.target.value }) }/>
-        <button onClick={ () => null }>Create List</button>
-        <p>{ this.state.input }</p>
+        <button onClick={ () => this.props.ourUpdateName(this.state.input) }>Create List</button>
+        <p>{ this.props.myName }</p>
       </div>
     );
   }
 }
 
-export default Dashboard;
+function mapStateToProps(state) {
+  return { myName: state.name };
+}
+
+export default connect(mapStateToProps, { ourUpdateName: updateName })(Dashboard);
